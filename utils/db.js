@@ -5,7 +5,6 @@ const HOST = process.env.DB_HOST || 'localhost';
 const PORT = process.env.DB_PORT || 27017;
 
 const url = `mongodb://${HOST}:${PORT}`;
-
 class DBClient {
   constructor() {
     this.client = new MongoClient(url);
@@ -15,15 +14,12 @@ class DBClient {
         this.db = this.client.db(`${DATABASE}`);
       })
       .catch((error) => {
-        console.log(error);
+        console.error('MongoDB connection error:', error);
       });
   }
 
   isAlive() {
-    if (this.client.isConnected) {
-      return true;
-    }
-    return false;
+    return this.client.isConnected();
   }
 
   // return number of docs in users collection
